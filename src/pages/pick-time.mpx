@@ -68,18 +68,18 @@
         },
         methods: {
             confirm() {
-                if (this.verifyTime(this.startTime, this.endTime)) {
+                if (this.type === 'sleep' && !this.verifyTime(this.startTime, this.endTime)) {
+                    wx.showToast({
+                        title: '结束时间不能早于开始时间',
+                        icon: 'none',
+                        duration: 1500
+                    });
+                } else {
                     const eventChannel = this.getOpenerEventChannel();
                     const time = this.type === 'sleep' ? [this.startTime, this.endTime] : [this.startTime];
                     eventChannel.emit('pickDone', { type: this.type, text: typeMap[this.type].name, time: time });
                     wx.navigateBack({
                         delta: 1
-                    });
-                } else {
-                    wx.showToast({
-                        title: '结束时间不能早于开始时间',
-                        icon: 'none',
-                        duration: 1500
                     });
                 }
             },
