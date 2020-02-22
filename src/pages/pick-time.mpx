@@ -1,0 +1,148 @@
+<template minapp="mpx" xlang="wxml">
+    <view class="container">
+        <view class="pick">
+            <view class="item">
+                <text class="desc">{{ desc }}</text>
+                <picker mode="time" value="{{startTime}}" start="00:00" end="23:59" bindchange="bindStartChange">
+                    <view class="picker">--{{ startTime }}--</view>
+                </picker>
+            </view>
+
+            <view class="item" wx:if="{{type==='sleep'}}">
+                <text class="desc">{{ desc2 }}</text>
+                <picker mode="time" value="{{endTime}}" start="00:00" end="23:59" bindchange="bindEndChange">
+                    <view class="picker">--{{ endTime }}--</view>
+                </picker>
+            </view>
+        </view>
+
+        <button bindtap="confirm" type="primary">确定</button>
+        <button bindtap="cancel">取消</button>
+    </view>
+</template>
+
+<script>
+    import { createPage } from '@mpxjs/core';
+    import dayjs from 'dayjs';
+
+    const typeMap = {
+        getup: { name: '起床', desc: '宝宝睡醒了' },
+        sleep: { name: '睡觉', desc: '开始时间', desc2: '结束时间' },
+        eat: { name: '喂奶', desc: '宝宝喝奶时间' },
+        night: { name: '入夜', desc: '宝宝开始入夜了' }
+    };
+
+    const fmt = 'HH:mm';
+
+    createPage({
+        data: {
+            canPick: true,
+            type: 'sleep',
+            startTime: dayjs().format(fmt),
+            endTime: dayjs()
+                .add(1, 'hour')
+                .format(fmt)
+        },
+        onLoad(option) {
+            this.type = option.type;
+            wx.setNavigationBarTitle({
+                title: typeMap[this.type].name
+            });
+
+            const eventChannel = this.getOpenerEventChannel();
+            eventChannel.on('timeList', data => {
+                this.timeList = data;
+            });
+        },
+        onShow() {},
+        computed: {
+            desc() {
+                return typeMap[this.type].desc;
+            },
+            desc2() {
+                return typeMap[this.type].desc2;
+            },
+            now() {
+                return dayjs().format(fmt);
+            }
+        },
+        methods: {
+            confirm() {
+                if (this.verifyTime(this.startTime, this.endTime)) {
+                    const eventChannel = this.getOpenerEventChannel();
+                    const time = this.type === 'sleep' ? [this.startTime, this.endTime] : [this.startTime];
+                    eventChannel.emit('pickDone', { type: this.type, text: typeMap[this.type].name, time: time });
+                    wx.navigateBack({
+                        delta: 1
+                    });
+                } else {
+                    wx.showToast({
+                        title: '结束时间不能早于开始时间',
+                        icon: 'none',
+                        duration: 1500
+                    });
+                }
+            },
+            cancel() {
+                wx.navigateBack({
+                    delta: 1
+                });
+            },
+            bindStartChange(e) {
+                this.startTime = e.detail.value;
+            },
+            bindEndChange(e) {
+                this.endTime = e.detail.value;
+            },
+            verifyTime(start, end) {
+                const timeA = dayjs()
+                    .hour(start.split(':')[0])
+                    .minute(start.split(':')[1]);
+                const timeB = dayjs()
+                    .hour(end.split(':')[0])
+                    .minute(end.split(':')[1]);
+                return timeB.diff(timeA) >= 0;
+            }
+        }
+    });
+</script>
+
+<style lang="stylus">
+    @import '~common/main.styl'
+
+    .container {
+      .pick{
+        padding 0 vw(20)
+        flex-x(center)
+        margin vw(30) auto
+
+        .item{
+            margin 0 vw(30)
+
+            .desc {
+              word-vw(vw(16),gray3)
+              font-weight bold
+              line-height vw(35)
+            }
+
+            .picker{
+              text-align center
+              word-vw(vw(16),#009ad6)
+              line-height vw(20)
+            }
+        }
+      }
+
+      button {
+        width vw(300)
+        margin vw(20) auto
+      }
+    }
+</style>
+
+<script type="application/json" lang="json">
+    {
+        "navigationBarTitleText": "",
+        "usingComponents": {}
+    }
+</script>

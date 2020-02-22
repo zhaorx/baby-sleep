@@ -1,0 +1,292 @@
+// 主色
+main-color = #0073FF;
+
+// 主圆角
+main-radius = (5 / 3.75) vw;
+
+// 全圆角
+all-radius = (100 / 3.75) vw
+
+//字号
+word10 = (10 / 3.75) vw;
+word12 = (12 / 3.75) vw;
+word14 = (14 / 3.75) vw;
+word16 = (16 / 3.75) vw;
+word18 = (18 / 3.75) vw
+word20 = (20 / 3.75) vw
+word36 = (36 / 3.75) vw
+
+// 灰度
+gray3 = #333
+gray6 = #666
+gray5 = #f5f5f5
+gray9 = #999
+grayE = #efefef
+grayF = #fff
+grayLint = #BFBFBF
+border-color = #f8f8f8
+//底栏
+tab-bg-color = grayF // 背景色
+tab-color = gray9 // icon默认色
+tab-active-color = main-color // icon高亮色
+
+//背景图片
+imgBaseUrl = 'http://youmaicloud.oss-cn-beijing.aliyuncs.com/shop/'
+static = 'http://youmaicloud.oss-cn-beijing.aliyuncs.com/static/'
+// 字号加颜色
+word-vw(size, color) {
+  font-size: size;
+  color: color;
+}
+
+//  px转vw(单位转换)
+vw(size) {
+  (size / 3.75) vw;
+}
+
+vh(size) {
+  (size / 6.67) vh;
+}
+
+// 分割线(注意看长度，有的是全部，所以做间隔，不引用这个)
+line() {
+  width calc(100% - 10px)
+  height (1 / 3.75) vw
+  margin 0 auto
+  background-color #f8f8f8
+}
+
+//外边距
+titleMargin = (5 / 3.75) vw;
+smallMargin = (10 / 3.75) vw;
+middleMargin = (20 / 3.75) vw;
+bigMargin = (30 / 3.75) vw;
+
+//内边距
+cellPadding = (15 / 3.75) vw;
+
+//transition(类型|时长|呈现方式)
+transition(part, time = 0.5s, vol = linear) {
+  transition: part time vol;
+  -webkit-transition: part time vol;
+  -moz-transition: part time vol;
+  -o-transition: part time vol;
+}
+
+
+//圆角
+border-radius(deg = 10px) {
+  -webkit-border-radius: deg;
+  -moz-border-radius: deg;
+  -o-radius: deg;
+  border-radius: deg;
+}
+
+//文字省略号
+ellipsis() {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+//多行省略号
+multi(row) {
+  display: -webkit-box
+  -webkit-box-orient vertical
+  -webkit-line-clamp: row
+  overflow: hidden
+  text-overflow: ellipsis
+  word-break: normal
+  width: auto
+  white-space: pre-wrap
+  word-wrap: break-word
+}
+
+//渐变色
+gradient(direction, colorStart, colorEnd) {
+  background: -webkit-linear-gradient(direction, colorStart, colorEnd);
+  background: linear-gradient(direction, colorStart, colorEnd);
+  background: -moz-linear-gradient(direction, colorStart, colorEnd);
+  background: -o-linear-gradient(direction, colorStart, colorEnd);
+  background: -ms-linear-gradient(direction, colorStart, colorEnd);
+}
+
+// 居中对齐
+flex-center() {
+  display: flex; /* 新版本语法: Opera 12.1, Firefox 22+ */
+  display: -webkit-flex; /* 新版本语法: Chrome 21+ */
+  justify-content center
+  align-items center
+}
+
+//flex布局沿x轴
+flex-x(justify = space-between, align = center) {
+  display: flex; /* 新版本语法: Opera 12.1, Firefox 22+ */
+  display: -webkit-flex; /* 新版本语法: Chrome 21+ */
+  flex-flow: row nowrap;
+  justify-content: justify;
+  align-items: align
+}
+
+//flex布局沿y轴居中对齐
+flex-y(justify = center, align = center) {
+  display: flex; /* 新版本语法: Opera 12.1, Firefox 22+ */
+  display: -webkit-flex; /* 新版本语法: Chrome 21+ */
+  flex-flow: column nowrap;
+  justify-content: justify;
+  align-items: align
+}
+
+//底部居中确定按钮
+btn-center() {
+  big-solid()
+  position fixed
+  bottom vw(10)
+  left 50%
+  margin-left vw(-100)
+}
+
+//跟随居中确定按钮
+btn-sta() {
+  big-solid()
+  margin vw(20) auto
+}
+
+//单元格样式
+cell() {
+  background-color grayF
+  height vw(45)
+  line-height vw(45)
+  padding 0 cellPadding
+  display flex
+  justify-content space-between
+  align-items center
+  font-size word14
+}
+
+icon(size = vw(12), color = gray9) {
+  color color
+  font-family:"iconfont" !important;
+  font-size:size;font-style:normal;
+}
+
+//选中按钮
+big-solid() {
+  width (200 / 3.75) vw
+  height (40 / 3.75) vw
+  background-color main-color
+  text-align center
+  line-height (40 / 3.75) vw
+  border-radius 30px
+  color grayF
+}
+
+middle-solid() {
+  width (150 / 3.75) vw
+  height (45 / 3.75) vw
+  background-color main-color
+  text-align center
+  line-height (45 / 3.75) vw
+  border-radius 30px
+  color grayF
+}
+
+secondary-solid() {
+  width (120 / 3.75) vw
+  height (40 / 3.75) vw
+  background-color main-color
+  text-align center
+  line-height (40 / 3.75) vw
+  border-radius 30px
+  color grayF
+}
+
+small-solid() {
+  width (64 / 3.75) vw
+  height (30 / 3.75) vw
+  background-color main-color
+  text-align center
+  line-height (30 / 3.75) vw
+  border-radius 30px
+  color grayF
+}
+
+//未选中按钮
+big-hollow(color= main-color, border = main-color) {
+  width (200 / 3.75) vw
+  height (40 / 3.75) vw
+  background-color white
+  border 1px solid border
+  border-radius 30px
+  box-sizing border-box
+  text-align center
+  line-height (40 / 3.75) vw
+  color color
+}
+
+middle-hollow(color= main-color, border = main-color) {
+  width (150 / 3.75) vw
+  height (45 / 3.75) vw
+  background-color white
+  border 1px solid border
+  border-radius 30px
+  box-sizing border-box
+  text-align center
+  line-height (45 / 3.75) vw
+  color color
+}
+
+secondary-hollow(color= main-color, border = main-color) {
+  width (120 / 3.75) vw
+  height (40 / 3.75) vw
+  background-color white
+  border 1px solid border
+  border-radius 30px
+  box-sizing border-box
+  text-align center
+  line-height (40 / 3.75) vw
+  color color
+}
+
+order-hollow(color= main-color, border = main-color) {
+  width (75 / 3.75) vw
+  height (30 / 3.75) vw
+  background-color white
+  border 1px solid border
+  border-radius 30px
+  box-sizing border-box
+  text-align center
+  line-height (30 / 3.75) vw
+  color color
+}
+small-hollow(color= main-color, border = main-color) {
+  width (64 / 3.75) vw
+  height (30 / 3.75) vw
+  background-color white
+  border 1px solid border
+  border-radius 30px
+  box-sizing border-box
+  text-align center
+  line-height (30 / 3.75) vw
+  color color
+}
+
+
+// >>> input::-webkit-input-placeholder {
+//   color: grayLint;
+// }
+
+// // 去除高德版权显示
+// >>> .amap-logo, >>> .amap-copyright {
+//   display: none !important;
+// }
+
+.line-10 {
+  width 100vw
+  height vw(10)
+  background gray5
+}
+
+view {
+  box-sizing: border-box
+}

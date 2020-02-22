@@ -1,0 +1,17 @@
+{
+    "compileType": "miniprogram",
+    "setting": {
+        "newFeature": true,
+        "urlCheck": true,
+        "es6": true,
+        "postcss": true,
+        "minified": false,
+        "autoAudits": false
+    },
+    "appid": "wxfe8905b37e38bbb0",
+    "projectname": "baby-sleep",
+    "description": "baby-sleep",
+    "simulatorType": "wechat",
+    "simulatorPluginLibVersion": {},
+    "condition": {}
+}

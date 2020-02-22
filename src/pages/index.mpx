@@ -1,0 +1,235 @@
+<template minapp="mpx" xlang="wxml">
+    <view class="container">
+        <view class="header">
+            <image class="clear" src="../static/clear.png" bind:tap="clear" />
+            <image class="bg" src="../static/bg.jpg" />
+            <image class="avatar" src="../static/avatar.jpg" />
+        </view>
+        <view class="btns">
+            <view class="item" bind:tap="toPickTime('getup')">
+                <image src="../static/getup.png" />
+                <text>起床</text>
+            </view>
+            <view class="item" bind:tap="toPickTime('sleep')">
+                <image src="../static/sleep.png" />
+                <text>睡觉</text>
+            </view>
+            <view class="item" bind:tap="toPickTime('eat')">
+                <image src="../static/eat.png" />
+                <text>喂奶</text>
+            </view>
+            <view class="item" bind:tap="toPickTime('night')">
+                <image src="../static/night.png" />
+                <text>入夜</text>
+            </view>
+        </view>
+
+        <scroll-view class="timeline" wx:if="{{timeList.length}}" scroll-y>
+            <view class="item" wx:for="{{timeList}}" catch:longtap="deleteItem" data-index="{{index}}">
+                <text class="time" wx:if="{{item.type==='sleep'}}">{{ item.time[0] }} - {{ item.time[1] }}</text>
+                <text class="time" wx:else>{{ item.time[0] }}</text>
+                <text class="content">{{ item.text }}</text>
+            </view>
+        </scroll-view>
+
+        <view class="nodata" wx:else>
+            <image src="../static/nodata.png" />
+            <text>作息记录呢...</text>
+        </view>
+    </view>
+</template>
+
+<script>
+    import { createPage } from '@mpxjs/core';
+    import dayjs from 'dayjs';
+
+    createPage({
+        data: {
+            timeList: []
+        },
+        onLoad(option) {
+            // 缓存取timeList
+            try {
+                this.timeList = wx.getStorageSync('timeList') || [];
+            } catch (error) {
+                this.timeList = [];
+            }
+        },
+        onShow() {},
+        methods: {
+            deleteItem(e) {
+                wx.showModal({
+                    title: '提示',
+                    content: '是否删除该条作息时间',
+                    success(res) {
+                        if (res.confirm) {
+                            const index = e.target.dataset.index;
+                            this.timeList.splice(index, 1);
+                        }
+                    }
+                });
+            },
+            toPickTime(type) {
+                wx.navigateTo({
+                    url: 'pick-time?type=' + type,
+                    success: res => {
+                        // 通过eventChannel向被打开页面传送数据
+                        res.eventChannel.emit('timeList', this.timeList);
+                    },
+                    events: {
+                        pickDone: data => {
+                            console.log(data);
+                            this.timeList.push(data);
+                            this.sortTimeLine();
+                        }
+                    }
+                });
+            },
+            // 时间线排序
+            sortTimeLine() {
+                const _timeList = [...this.timeList];
+                _timeList.sort((a, b) => {
+                    const timeA = dayjs()
+                        .hour(a.time[0].split(':')[0])
+                        .minute(a.time[0].split(':')[1]);
+                    const timeB = dayjs()
+                        .hour(b.time[0].split(':')[0])
+                        .minute(b.time[0].split(':')[1]);
+                    return timeA.diff(timeB);
+                });
+
+                this.timeList = _timeList;
+
+                wx.setStorage({
+                    key: 'timeList',
+                    data: this.timeList
+                });
+            },
+            clear() {
+                wx.showModal({
+                    title: '提示',
+                    content: '是否清空作息记录',
+                    success: res => {
+                        if (res.confirm) {
+                            this.timeList = [];
+                        }
+                    }
+                });
+            }
+        }
+    });
+</script>
+
+<style lang="stylus">
+     @import '~common/main.styl'
+
+    .container {
+        .header {
+            position relative
+            width 100vw
+            height vw(80)
+
+            .clear {
+                position absolute
+                top vw(10)
+                right vw(10)
+                width vw(25)
+                height vw(25)
+            }
+
+            .bg{
+                width 100vw
+                height vw(80)
+            }
+            .avatar{
+                width vw(50)
+                height vw(50)
+                position absolute
+                bottom vw(10)
+                left 50%
+                transform translateX(-50%)
+                border-radius all-radius
+            }
+        }
+
+        .btns{
+            margin vw(20) 0
+            padding 0 vw(40)
+            width 100vw
+            flex-x()
+
+            .item {
+                flex-y()
+
+                image {
+                    width vw(20)
+                    height vw(20)
+                    margin-bottom vw(5)
+                }
+
+                text {
+                    word-vw(vw(12),gray3)
+                    line-height vw(15)
+                }
+            }
+        }
+
+        .timeline{
+            other = vw(180);
+            height: 'calc(100vh - %s)' % other;
+
+            .item {
+                height vw(40)
+                border-bottom 1px solid #EFEFEF
+                flex-x()
+
+                .time {
+                    flex 1
+                    word-vw(vw(14),gray3)
+                    line-height vw(40)
+                    text-align center
+                    position relative
+
+                    &::after {
+                        position absolute
+                        right 0
+                        bottom vw(10)
+                        height vw(18)
+                        border 1px solid #7bbfea
+                        transform scaleX(0.5)
+                        content ' '
+                    }
+                }
+                .content {
+                    flex 1
+                    word-vw(vw(14),gray3)
+                    line-height vw(40)
+                    text-align center
+                }
+            }
+        }
+
+        .nodata {
+            other = vw(180);
+            height: 'calc(100vh - %s)' % other;
+            flex-y(center,center)
+
+            image {
+                width 150px
+                height 150px
+            }
+
+            text {
+                word-vw(vw(13),gray3)
+                line-height vw(20)
+            }
+        }
+    }
+</style>
+
+<script type="application/json" lang="json">
+    {
+        "navigationBarTitleText": "满满你给我好好睡",
+        "usingComponents": {}
+    }
+</script>

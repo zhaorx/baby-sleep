@@ -1,0 +1,37 @@
+
+.line-10 {
+  width: 100vw;
+  height: 2.666666666666667vw;
+  background: #f5f5f5;
+}
+view {
+  box-sizing: border-box;
+}
+.container .pick {
+  padding: 0 5.333333333333333vw;
+  display: flex; /* 新版本语法: Opera 12.1, Firefox 22+ */
+  display: -webkit-flex; /* 新版本语法: Chrome 21+ */
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  margin: 8vw auto;
+}
+.container .pick .item {
+  margin: 0 8vw;
+}
+.container .pick .item .desc {
+  font-size: 4.266666666666667vw;
+  color: #333;
+  font-weight: bold;
+  line-height: 9.333333333333334vw;
+}
+.container .pick .item .picker {
+  text-align: center;
+  font-size: 4.266666666666667vw;
+  color: #009ad6;
+  line-height: 5.333333333333333vw;
+}
+.container button {
+  width: 80vw;
+  margin: 5.333333333333333vw auto;
+}

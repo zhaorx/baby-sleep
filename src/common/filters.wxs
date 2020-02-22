@@ -1,0 +1,9 @@
+/**
+ * 静态图片组装格式化-过滤器
+ * name 图片名称
+ * path 图片路径 默认static
+ * type 图片格式 （jpg,png）
+ */
+module.exports.imageFmt =  function (name, type = 'png', path = 'static') {
+    return 'https://jiankejianshen.oss-cn-beijing.aliyuncs.com/' + path + '/' + name + '.' + type
+}

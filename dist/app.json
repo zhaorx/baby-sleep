@@ -1,0 +1,10 @@
+{
+  "debug": true,
+  "pages": [
+    "pages/index",
+    "pages/pick-time"
+  ],
+  "window": {
+    "navigationBarTitleText": "满宝睡"
+  }
+}

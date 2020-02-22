@@ -1,0 +1,117 @@
+
+.line-10 {
+  width: 100vw;
+  height: 2.666666666666667vw;
+  background: #f5f5f5;
+}
+view {
+  box-sizing: border-box;
+}
+.container .header {
+  position: relative;
+  width: 100vw;
+  height: 21.333333333333332vw;
+}
+.container .header .clear {
+  position: absolute;
+  top: 2.666666666666667vw;
+  right: 2.666666666666667vw;
+  width: 6.666666666666667vw;
+  height: 6.666666666666667vw;
+}
+.container .header .bg {
+  width: 100vw;
+  height: 21.333333333333332vw;
+}
+.container .header .avatar {
+  width: 13.333333333333334vw;
+  height: 13.333333333333334vw;
+  position: absolute;
+  bottom: 2.666666666666667vw;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-border-radius: 26.666666666666668vw;
+  -moz-border-radius: 26.666666666666668vw;
+  -o-radius: 26.666666666666668vw;
+  border-radius: 26.666666666666668vw;
+}
+.container .btns {
+  margin: 5.333333333333333vw 0;
+  padding: 0 10.666666666666666vw;
+  width: 100vw;
+  display: flex; /* 新版本语法: Opera 12.1, Firefox 22+ */
+  display: -webkit-flex; /* 新版本语法: Chrome 21+ */
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.container .btns .item {
+  display: flex; /* 新版本语法: Opera 12.1, Firefox 22+ */
+  display: -webkit-flex; /* 新版本语法: Chrome 21+ */
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.container .btns .item image {
+  width: 5.333333333333333vw;
+  height: 5.333333333333333vw;
+  margin-bottom: 1.333333333333333vw;
+}
+.container .btns .item text {
+  font-size: 3.2vw;
+  color: #333;
+  line-height: 4vw;
+}
+.container .timeline {
+  height: calc(100vh - 48vw);
+}
+.container .timeline .item {
+  height: 10.666666666666666vw;
+  border-bottom: 1px solid #efefef;
+  display: flex; /* 新版本语法: Opera 12.1, Firefox 22+ */
+  display: -webkit-flex; /* 新版本语法: Chrome 21+ */
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.container .timeline .item .time {
+  flex: 1;
+  font-size: 3.733333333333333vw;
+  color: #333;
+  line-height: 10.666666666666666vw;
+  text-align: center;
+  position: relative;
+}
+.container .timeline .item .time::after {
+  position: absolute;
+  right: 0;
+  bottom: 2.666666666666667vw;
+  height: 4.8vw;
+  border: 1px solid #7bbfea;
+  transform: scaleX(0.5);
+  content: ' ';
+}
+.container .timeline .item .content {
+  flex: 1;
+  font-size: 3.733333333333333vw;
+  color: #333;
+  line-height: 10.666666666666666vw;
+  text-align: center;
+}
+.container .nodata {
+  height: calc(100vh - 48vw);
+  display: flex; /* 新版本语法: Opera 12.1, Firefox 22+ */
+  display: -webkit-flex; /* 新版本语法: Chrome 21+ */
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.container .nodata image {
+  width: 150px;
+  height: 150px;
+}
+.container .nodata text {
+  font-size: 3.466666666666667vw;
+  color: #333;
+  line-height: 5.333333333333333vw;
+}
