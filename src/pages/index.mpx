@@ -1,7 +1,7 @@
 <template minapp="mpx" xlang="wxml">
     <view class="container">
         <view class="header">
-            <text class="totalSleep">{{ totalSleep }}</text>
+            <text class="totalSleep">臭小子睡了{{ totalSleep }}</text>
             <image class="clear" src="../static/clear.png" bind:tap="clear" />
             <image class="bg" src="../static/bg.jpg" />
             <image class="avatar" src="../static/avatar.jpg" />
@@ -66,13 +66,13 @@
                         const timeB = dayjs()
                             .hour(item.time[1].split(':')[0])
                             .minute(item.time[1].split(':')[1]);
-                        return total + ~~(timeB.diff(timeA) / 1000 / 60);
+                        return ~~(total + timeB.diff(timeA) / 1000 / 60);
                     } else {
                         return total;
                     }
                 }, 0);
 
-                const hour = ~~totalMinutes / 60;
+                const hour = ~~(totalMinutes / 60);
                 const minute = totalMinutes % 60;
                 return totalMinutes > 0 ? `${hour}小时${minute}分` : '';
             }
