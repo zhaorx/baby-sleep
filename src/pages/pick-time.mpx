@@ -53,6 +53,10 @@
             eventChannel.on('timeList', data => {
                 this.timeList = data;
             });
+            eventChannel.on('item', data => {
+                this.startTime = data.time[0];
+                this.endTime = data.time[1];
+            });
         },
         onShow() {},
         computed: {
@@ -111,32 +115,32 @@
     @import '~common/main.styl'
 
     .container {
-      .pick{
-        padding 0 vw(20)
-        flex-x(center)
-        margin vw(30) auto
+        .pick{
+            padding 0 vw(20)
+            flex-x(center)
+            margin vw(30) auto
 
-        .item{
-            margin 0 vw(30)
+            .item{
+                margin 0 vw(30)
 
-            .desc {
-              word-vw(vw(16),gray3)
-              font-weight bold
-              line-height vw(35)
-            }
+                .desc {
+                    word-vw(vw(16),gray3)
+                    font-weight bold
+                    line-height vw(35)
+                }
 
-            .picker{
-              text-align center
-              word-vw(vw(16),#009ad6)
-              line-height vw(20)
+                .picker{
+                    text-align center
+                    word-vw(vw(16),#009ad6)
+                    line-height vw(20)
+                }
             }
         }
-      }
 
-      button {
-        width vw(300)
-        margin vw(20) auto
-      }
+        button {
+            width vw(300)
+            margin vw(20) auto
+        }
     }
 </style>
 

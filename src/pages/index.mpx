@@ -1,6 +1,7 @@
 <template minapp="mpx" xlang="wxml">
     <view class="container">
         <view class="header">
+            <text class="totalSleep">{{ totalSleep }}</text>
             <image class="clear" src="../static/clear.png" bind:tap="clear" />
             <image class="bg" src="../static/bg.jpg" />
             <image class="avatar" src="../static/avatar.jpg" />
@@ -25,7 +26,7 @@
         </view>
 
         <scroll-view class="timeline" wx:if="{{timeList.length}}" scroll-y>
-            <view class="item" wx:for="{{timeList}}" catch:longtap="deleteItem" data-index="{{index}}">
+            <view class="item" wx:for="{{timeList}}" catch:longtap="deleteItem" data-index="{{index}}" bind:touchstart="onTouchStart">
                 <text class="time" wx:if="{{item.type==='sleep'}}">{{ item.time[0] }} - {{ item.time[1] }}</text>
                 <text class="time" wx:else>{{ item.time[0] }}</text>
                 <text class="content">{{ item.text }}</text>
@@ -55,26 +56,74 @@
                 this.timeList = [];
             }
         },
+        computed: {
+            totalSleep() {
+                const totalMinutes = this.timeList.reduce((total, item) => {
+                    if (item.type === 'sleep') {
+                        const timeA = dayjs()
+                            .hour(item.time[0].split(':')[0])
+                            .minute(item.time[0].split(':')[1]);
+                        const timeB = dayjs()
+                            .hour(item.time[1].split(':')[0])
+                            .minute(item.time[1].split(':')[1]);
+                        return total + ~~(timeB.diff(timeA) / 1000 / 60);
+                    } else {
+                        return total;
+                    }
+                }, 0);
+
+                const hour = ~~totalMinutes / 60;
+                const minute = totalMinutes % 60;
+                return totalMinutes > 0 ? `${hour}小时${minute}分` : '';
+            }
+        },
         onShow() {},
         methods: {
             deleteItem(e) {
                 wx.showModal({
                     title: '提示',
                     content: '是否删除该条作息时间',
-                    success(res) {
+                    success: res => {
                         if (res.confirm) {
-                            const index = e.target.dataset.index;
+                            const index = e.currentTarget.dataset.index;
                             this.timeList.splice(index, 1);
                         }
                     }
                 });
             },
-            toPickTime(type) {
+            // 单双击判断
+            onTouchStart(e) {
+                const index = e.currentTarget.dataset.index;
+                if (e.timeStamp - this.lastTouchTime < 300 && this.lastTouchIndex === index) {
+                    // 双击
+                    wx.showModal({
+                        title: '提示',
+                        content: '确认想修改?',
+                        success: res => {
+                            if (res.confirm) {
+                                const item = this.timeList[index];
+                                this.toPickTime(item.type, item);
+                                setTimeout(() => {
+                                    this.timeList.splice(index, 1);
+                                }, 1200);
+                            }
+                        }
+                    });
+                } else {
+                    // 单机或者item不同
+                    this.lastTouchTime = e.timeStamp;
+                    this.lastTouchIndex = index;
+                }
+            },
+            toPickTime(type, item = false) {
                 wx.navigateTo({
                     url: 'pick-time?type=' + type,
                     success: res => {
                         // 通过eventChannel向被打开页面传送数据
                         res.eventChannel.emit('timeList', this.timeList);
+                        if (item) {
+                            res.eventChannel.emit('editItem', item);
+                        }
                     },
                     events: {
                         pickDone: data => {
@@ -129,6 +178,13 @@
             width 100vw
             height vw(80)
 
+            .totalSleep {
+                position absolute
+                top vw(10)
+                left vw(10)
+                word-vw(vw(12),gray6)
+                line-height vw(20)
+            }
             .clear {
                 position absolute
                 top vw(10)
